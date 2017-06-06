@@ -1,45 +1,51 @@
-
 #include "ImageProcessing.h"
+#include "ColorSpaces.h"
+#include "ImageFilter.h"
+#include "NoiseReduction.h"
 #include "ImageInterpolation.h"
+#include <math.h>
 
 #include <QDebug>
+
+int upto(int x, int y) {
+	return (x + y - 1) & ~(y - 1);
+}
 
 void imageProcessingFun(const QString& progName, QImage* const outImgs, const QImage* const inImgs, const QVector<double>& params) 
 {
 	int X_SIZE = inImgs->width();
 	int Y_SIZE = inImgs->height();
-
-	/* NOTE: Calculate output image resolution and construct output image object */
-
+		
 	if(progName == "Sample and hold") 
 	{	
-		/* Input image data in RGB format can be obtained with inImgs->bits() */
-		/* Vertical scale factor is params[0] */
-		/* Horizontal scale factor is params[1] */
+		double vertical_factor = params[0], horizontal_factor = params[1];
+		int newX_SIZE = upto(horizontal_factor * X_SIZE , 4);
+		int newY_SIZE = upto(vertical_factor * Y_SIZE , 4);
 
-		/* TO DO: Calculate output image resolution and construct output image object */
+		/* Create empty output image */
+		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format()));
 
-		/* TO DO: Perform Sample and hold interpolation  */
-
-
+		sampleAndHold(inImgs->bits() , X_SIZE , Y_SIZE , outImgs->bits() , newX_SIZE , newY_SIZE);
 	}
 	else if (progName == "Bilinear") 
 	{
-		/* Input image data in RGB format can be obtained with inImgs->bits() */
-		/* Vertical scale factor is params[0] */
-		/* Horizontal scale factor is params[1] */
+		double vertical_factor = params[0], horizontal_factor = params[1];
+		int newX_SIZE = horizontal_factor * X_SIZE;
+		int newY_SIZE = vertical_factor * Y_SIZE;
 
-		/* TO DO: Calculate output image resolution and construct output image object */
+		/* Create empty output image */
+		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format()));
 
 		/* TO DO: Perform Bilinear interpolation  */
 	}
 	else if (progName == "Bicubic")
 	{
-		/* Input image data in RGB format can be obtained with inImgs->bits() */
-		/* Vertical scale factor is params[0] */
-		/* Horizontal scale factor is params[1] */
+		double vertical_factor = params[0], horizontal_factor = params[1];
+		int newX_SIZE = horizontal_factor * X_SIZE;
+		int newY_SIZE = vertical_factor * Y_SIZE;
 
-		/* TO DO: Calculate output image resolution and construct output image object */
+		/* Create empty output image */
+		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format())); 
 
 		/* TO DO: Perform Bicubic interpolation  */
 
