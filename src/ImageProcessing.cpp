@@ -30,25 +30,26 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	else if (progName == "Bilinear") 
 	{
 		double vertical_factor = params[0], horizontal_factor = params[1];
-		int newX_SIZE = horizontal_factor * X_SIZE;
-		int newY_SIZE = vertical_factor * Y_SIZE;
+		int newX_SIZE = upto(horizontal_factor * X_SIZE, 4);
+		int newY_SIZE = upto(vertical_factor * Y_SIZE, 4);
 
 		/* Create empty output image */
 		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format()));
 
-		/* TO DO: Perform Bilinear interpolation  */
+		/* Perform Bilinear interpolation  */
+		bilinearInterpolate(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), newX_SIZE, newY_SIZE);
 	}
 	else if (progName == "Bicubic")
 	{
 		double vertical_factor = params[0], horizontal_factor = params[1];
-		int newX_SIZE = horizontal_factor * X_SIZE;
-		int newY_SIZE = vertical_factor * Y_SIZE;
+		int newX_SIZE = upto(horizontal_factor * X_SIZE, 4);
+		int newY_SIZE = upto(vertical_factor * Y_SIZE, 4);
 
 		/* Create empty output image */
 		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format())); 
 
-		/* TO DO: Perform Bicubic interpolation  */
-
+		/* Perform Bicubic interpolation  */
+		bicubicInterpolate(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), newX_SIZE, newY_SIZE);
 	}
 	else if(progName == "Rotation") 
 	{	

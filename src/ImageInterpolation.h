@@ -10,7 +10,7 @@ void sampleAndHold(const uchar input[], int xSize, int ySize, uchar output[], in
 
 void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize);
 
-void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize);
+void bicubicInterpolate(const uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize);
 
 void imageRotate(const uchar input[], int xSize, int ySize, uchar output[], int m, int n, double angle);
 
