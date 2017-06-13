@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-int upto(int x, int y) {
+int round_by(int x, int y) {
 	return (x + y - 1) & ~(y - 1);
 }
 
@@ -19,8 +19,8 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	if(progName == "Sample and hold") 
 	{	
 		double vertical_factor = params[0], horizontal_factor = params[1];
-		int newX_SIZE = upto(horizontal_factor * X_SIZE , 4);
-		int newY_SIZE = upto(vertical_factor * Y_SIZE , 4);
+		int newX_SIZE = round_by(horizontal_factor * X_SIZE , 4);
+		int newY_SIZE = round_by(vertical_factor * Y_SIZE , 4);
 
 		/* Create empty output image */
 		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format()));
@@ -30,8 +30,8 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	else if (progName == "Bilinear") 
 	{
 		double vertical_factor = params[0], horizontal_factor = params[1];
-		int newX_SIZE = upto(horizontal_factor * X_SIZE, 4);
-		int newY_SIZE = upto(vertical_factor * Y_SIZE, 4);
+		int newX_SIZE = round_by(horizontal_factor * X_SIZE, 4);
+		int newY_SIZE = round_by(vertical_factor * Y_SIZE, 4);
 
 		/* Create empty output image */
 		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format()));
@@ -42,8 +42,8 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	else if (progName == "Bicubic")
 	{
 		double vertical_factor = params[0], horizontal_factor = params[1];
-		int newX_SIZE = upto(horizontal_factor * X_SIZE, 4);
-		int newY_SIZE = upto(vertical_factor * Y_SIZE, 4);
+		int newX_SIZE = round_by(horizontal_factor * X_SIZE, 4);
+		int newY_SIZE = round_by(vertical_factor * Y_SIZE, 4);
 
 		/* Create empty output image */
 		*outImgs = *(new QImage(newX_SIZE, newY_SIZE, inImgs->format())); 
@@ -53,24 +53,13 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	}
 	else if(progName == "Rotation") 
 	{	
-		/* Input image data in RGB format can be obtained with inImgs->bits() */
-		/* Rotation angle in degrees is params[0]*/
-		/* Center of rotation coordinates are (XSIZE/2, YSIZE/2) */
-
-		/* TO DO: Construct output image object */
-
-		/* TO DO: Perform image rotation */
-	
+		*outImgs = *(new QImage(X_SIZE, Y_SIZE, inImgs->format()));
+		imageRotate(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE / 2, Y_SIZE / 2, params[0]);	
 	}
 	else if (progName == "Rotation Bilinear") 
 	{
-		/* Input image data in RGB format can be obtained with inImgs->bits() */
-		/* Rotation angle in degrees is params[0]*/
-		/* Center of rotation coordinates are (XSIZE/2, YSIZE/2) */
-
-		/* TO DO: Construct output image object */
-
-		/* TO DO: Perform image rotation with bilinear interpolation */
+		*outImgs = *(new QImage(X_SIZE, Y_SIZE, inImgs->format()));
+		imageRotateBilinear(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE / 2, Y_SIZE / 2, params[0]);
 	}
 
 }
